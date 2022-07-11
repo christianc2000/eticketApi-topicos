@@ -20,11 +20,11 @@ class CreateCantidadAreasTable extends Migration
             $table->decimal('precio',8,2);
             $table->unsignedInteger('cantidad_individual');
             $table->string('prefijo');
-            $table->unsignedBigInteger('area_padre_id');
-            $table->unsignedBigInteger('area_hijo_id');
+            $table->unsignedBigInteger('id_padre');
+            $table->unsignedBigInteger('id_hijo');
             $table->foreignId('fecha_id')->references('id')->on('fechas');
-            $table->foreign('area_padre_id')->references('id')->on('areas');
-            $table->foreign('area_hijo_id')->references('id')->on('areas');
+            $table->foreign('id_padre')->references('id')->on('areas');
+            $table->foreign('id_hijo')->references('id')->on('areas');
             $table->timestamps();
         });
     }

@@ -16,9 +16,9 @@ class Area extends Model
     
     //relación de 1 a muchos inversa
     public function cantidadAreasP(){
-        return $this->hasMany(CantidadArea::class, 'area_padre_id');
+        return $this->hasMany(CantidadArea::class,'id_padre');
     }
     public function cantidadAreasH(){
-        return $this->hasMany(cantidadArea::class, 'area_hijo_id');
+        return $this->hasMany(cantidadArea::class,'id_hijo');
     }
 }

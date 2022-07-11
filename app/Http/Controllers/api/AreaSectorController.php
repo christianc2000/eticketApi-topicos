@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Telefono;
+use App\Models\AreaSector;
 use Illuminate\Http\Request;
 
-class TelefonoController extends Controller
+class AreaSectorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +15,11 @@ class TelefonoController extends Controller
      */
     public function index()
     {
-        $telefonos = Telefono::all();
+        $as = AreaSector::all();
         return response()->json([
             "status" => 1,
-            "msg" => "Lista de telefonos",
-            "data" => $telefonos
+            "msg" => "Lista de área-sectors",
+            "data" => $as
         ]);
     }
 
@@ -42,15 +42,18 @@ class TelefonoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'numero'=>'required',
-            'localidad_id'=>'required'
+            'precio' => 'required',
+            'color' => 'required|string',
+            'sector_id' => 'required|integer',
+            'area_id' => 'required|integer',
+            'evento_localidad_id' => 'required|integer',
         ]);
 
-        $telefono = Telefono::create($request->all());
+        $as = AreaSector::create($request->all());
         return response()->json([
             "status" => 1,
-            "msg" => "El telefono fue creada exitosamente",
-            "data" => $telefono
+            "msg" => "El área-sector fue creada exitosamente",
+            "data" => $as
         ]);
     }
 
@@ -62,18 +65,21 @@ class TelefonoController extends Controller
      */
     public function show($id)
     {
-        $telefono = Telefono::all()->find($id);
-        $telefono->localidad;
-        if (isset($telefono)) {
+        $as = AreaSector::all()->find($id);
+        $as->area;
+        $as->sector;
+        $as->eventoLocalidad->evento->categoria;
+        $as->eventoLocalidad->localidad;
+        if (isset($as)) {
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono encontrado exitosamente!",
-                "data" => $telefono
+                "msg" => "¡Área-sector encontrado exitosamente!",
+                "data" => $as
             ], 200);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, sector no encontrado!'
+                'msg' => '¡Fallo área-sector no encontrado!'
             ], 404);
         }
     }
@@ -98,23 +104,26 @@ class TelefonoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $telefono = Telefono::all()->find($id);
-        if (isset($telefono)) {
+        $as = AreaSector::all()->find($id);
+        if (isset($as)) {
             $request->validate([
-                'numero'=>'required',
-                'localidad_id'=>'required'
+                'precio' => 'required',
+                'color' => 'required|string',
+                'sector_id' => 'required|integer',
+                'area_id' => 'required|integer',
+                'evento_localidad_id' => 'required|integer',
             ]);
 
-            $telefono->update($request->all());
+            $as->update($request->all());
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono actualizado exitosamente!",
-                "data" => $telefono
+                "msg" => "¡Área-sector actualizado exitosamente!",
+                "data" => $as
             ], 200);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, telefono no encontrado!'
+                'msg' => '¡Fallo, área-sector no encontrado!'
             ], 404);
         }
     }
@@ -127,18 +136,18 @@ class TelefonoController extends Controller
      */
     public function destroy($id)
     {
-        $telefono = Telefono::all()->find($id);
-        if (isset($telefono)) {
-            $telefono->delete();
+        $as = AreaSector::all()->find($id);
+        if (isset($as)) {
+            $as->delete();
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono eliminado exitosamente!",
-                "data" => $telefono
+                "msg" => "¡Área-sector eliminado exitosamente!",
+                "data" => $as
             ], 200);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, telefono no encontrado!'
+                'msg' => '¡Fallo, área-sector no encontrado!'
             ], 404);
         }
     }

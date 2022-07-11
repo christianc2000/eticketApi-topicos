@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Telefono;
+use App\Models\Fecha;
 use Illuminate\Http\Request;
 
-class TelefonoController extends Controller
+class FechaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +15,11 @@ class TelefonoController extends Controller
      */
     public function index()
     {
-        $telefonos = Telefono::all();
+        $fecha = Fecha::all();
         return response()->json([
             "status" => 1,
-            "msg" => "Lista de telefonos",
-            "data" => $telefonos
+            "msg" => "Lista de Fechas",
+            "data" => $fecha
         ]);
     }
 
@@ -42,15 +42,16 @@ class TelefonoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'numero'=>'required',
-            'localidad_id'=>'required'
+            'fecha_evento' => 'required|date',
+            'hora' => 'required|time',
+            'evento_localidad_id' => 'required|integer',
         ]);
 
-        $telefono = Telefono::create($request->all());
+        $fecha = Fecha::create($request->all());
         return response()->json([
             "status" => 1,
-            "msg" => "El telefono fue creada exitosamente",
-            "data" => $telefono
+            "msg" => "La fecha fue creada exitosamente",
+            "data" => $fecha
         ]);
     }
 
@@ -62,18 +63,19 @@ class TelefonoController extends Controller
      */
     public function show($id)
     {
-        $telefono = Telefono::all()->find($id);
-        $telefono->localidad;
-        if (isset($telefono)) {
+        $fecha = Fecha::all()->find($id);
+        $fecha->eventoLocalidad->evento->categoria;
+
+        if (isset($fecha)) {
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono encontrado exitosamente!",
-                "data" => $telefono
+                "msg" => "¡Fecha encontrada exitosamente!",
+                "data" => $fecha
             ], 200);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, sector no encontrado!'
+                'msg' => '¡Fallo, fecha no encontrado!'
             ], 404);
         }
     }
@@ -98,23 +100,23 @@ class TelefonoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $telefono = Telefono::all()->find($id);
-        if (isset($telefono)) {
+        $fecha = Fecha::all()->find($id);
+        if (isset($fecha)) {
             $request->validate([
-                'numero'=>'required',
-                'localidad_id'=>'required'
+                'fecha_evento' => 'required|date',
+                'hora' => 'required|time',
+                'evento_localidad_id' => 'required|integer',
             ]);
-
-            $telefono->update($request->all());
+            $fecha->update($request->all());
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono actualizado exitosamente!",
-                "data" => $telefono
+                "msg" => "Fecha actualizada exitosamente",
+                "data" => $fecha
             ], 200);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, telefono no encontrado!'
+                'msg' => '¡Fallo, fecha no encontrado!'
             ], 404);
         }
     }
@@ -127,18 +129,18 @@ class TelefonoController extends Controller
      */
     public function destroy($id)
     {
-        $telefono = Telefono::all()->find($id);
-        if (isset($telefono)) {
-            $telefono->delete();
+        $fecha = Fecha::all()->find($id);
+        if (isset($fecha)) {
+            $fecha->delete();
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono eliminado exitosamente!",
-                "data" => $telefono
+                "msg" => "¡Fecha eliminado exitosamente!",
+                "data" => $fecha
             ], 200);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, telefono no encontrado!'
+                'msg' => '¡Fallo, fecha no encontrada!'
             ], 404);
         }
     }

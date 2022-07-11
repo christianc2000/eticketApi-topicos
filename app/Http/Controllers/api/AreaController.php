@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Telefono;
+use App\Models\Area;
+use Exception;
 use Illuminate\Http\Request;
 
-class TelefonoController extends Controller
+class AreaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +16,11 @@ class TelefonoController extends Controller
      */
     public function index()
     {
-        $telefonos = Telefono::all();
+        $areas = Area::all();
         return response()->json([
             "status" => 1,
-            "msg" => "Lista de telefonos",
-            "data" => $telefonos
+            "msg" => "Lista de áreas",
+            "data" => $areas
         ]);
     }
 
@@ -42,15 +43,16 @@ class TelefonoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'numero'=>'required',
-            'localidad_id'=>'required'
+            'nombre' => 'required|string|max:20',
+            'capacidad' => 'required|integer',
+            'nivel' => 'required|integer',
         ]);
 
-        $telefono = Telefono::create($request->all());
+        $area = Area::create($request->all());
         return response()->json([
             "status" => 1,
-            "msg" => "El telefono fue creada exitosamente",
-            "data" => $telefono
+            "msg" => "El área fue creada exitosamente",
+            "data" => $area
         ]);
     }
 
@@ -62,18 +64,18 @@ class TelefonoController extends Controller
      */
     public function show($id)
     {
-        $telefono = Telefono::all()->find($id);
-        $telefono->localidad;
-        if (isset($telefono)) {
+        $area = Area::all()->find($id);
+        
+        if (isset($area)) {
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono encontrado exitosamente!",
-                "data" => $telefono
+                "msg" => "¡Área encontrado exitosamente!",
+                "data" => $area
             ], 200);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, sector no encontrado!'
+                'msg' => '¡Fallo área-sector no encontrado!'
             ], 404);
         }
     }
@@ -98,23 +100,24 @@ class TelefonoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $telefono = Telefono::all()->find($id);
-        if (isset($telefono)) {
+        $area = Area::all()->find($id);
+        if (isset($area)) {
             $request->validate([
-                'numero'=>'required',
-                'localidad_id'=>'required'
+                'nombre' => 'required|string|max:20',
+                'capacidad' => 'required|integer',
+                'nivel' => 'required|integer',
             ]);
 
-            $telefono->update($request->all());
+            $area->update($request->all());
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono actualizado exitosamente!",
-                "data" => $telefono
+                "msg" => "¡Área actualizado exitosamente!",
+                "data" => $area
             ], 200);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, telefono no encontrado!'
+                'msg' => '¡Fallo, área no encontrado!'
             ], 404);
         }
     }
@@ -127,18 +130,18 @@ class TelefonoController extends Controller
      */
     public function destroy($id)
     {
-        $telefono = Telefono::all()->find($id);
-        if (isset($telefono)) {
-            $telefono->delete();
+        $area = Area::all()->find($id);
+        if (isset($area)) {
+            $area->delete();
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono eliminado exitosamente!",
-                "data" => $telefono
+                "msg" => "¡Área eliminado exitosamente!",
+                "data" => $area
             ], 200);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, telefono no encontrado!'
+                'msg' => '¡Fallo, área no encontrado!'
             ], 404);
         }
     }

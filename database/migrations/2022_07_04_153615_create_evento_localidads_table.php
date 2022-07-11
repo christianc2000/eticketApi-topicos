@@ -15,8 +15,8 @@ class CreateEventoLocalidadsTable extends Migration
     {
         Schema::create('evento_localidads', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('evento_id')->references('id')->on('eventos');
-            $table->foreignId('localidad_id')->references('id')->on('localidads');
+            $table->foreignId('evento_id')->references('id')->on('eventos')->onDelete('cascade');
+            $table->foreignId('localidad_id')->references('id')->on('localidads')->onDelete('cascade');
             $table->timestamps();
         });
     }

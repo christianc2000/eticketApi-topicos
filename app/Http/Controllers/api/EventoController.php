@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Categoria;
 use App\Models\Evento;
 use Exception;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ class EventoController extends Controller
     public function index()
     {
         $eventos = Evento::all();
+        $categoria=Categoria::all();
         return response()->json([
             "status" => 1,
             "msg" => "Lista de Eventos",
@@ -67,6 +69,7 @@ class EventoController extends Controller
     {
 
         $evento = Evento::all()->find($id);
+        $evento->categoria;
         if (isset($evento)) {
             return response()->json([
                 "status" => 1,
@@ -76,7 +79,7 @@ class EventoController extends Controller
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo evento no encontrado!'
+                'msg' => '¡Fallo, evento no encontrado!'
             ], 404);
         }
     }
@@ -119,7 +122,7 @@ class EventoController extends Controller
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo evento no encontrado!'
+                'msg' => '¡Fallo, evento no encontrado!'
             ], 404);
         }
     }
@@ -144,7 +147,7 @@ class EventoController extends Controller
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo evento no encontrado!'
+                'msg' => '¡Fallo, evento no encontrado!'
             ], 404);
         }
     }

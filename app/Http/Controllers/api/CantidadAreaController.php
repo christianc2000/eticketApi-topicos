@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Telefono;
+use App\Models\CantidadArea;
+use App\Models\Fecha;
 use Illuminate\Http\Request;
 
-class TelefonoController extends Controller
+class CantidadAreaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +16,11 @@ class TelefonoController extends Controller
      */
     public function index()
     {
-        $telefonos = Telefono::all();
+        $ca = CantidadArea::all();
         return response()->json([
             "status" => 1,
-            "msg" => "Lista de telefonos",
-            "data" => $telefonos
+            "msg" => "Lista de cantidad-area",
+            "data" => $ca
         ]);
     }
 
@@ -42,15 +43,21 @@ class TelefonoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'numero'=>'required',
-            'localidad_id'=>'required'
+            'cantidad' => 'required|integer',
+            'stock' => 'required|integer',
+            'precio' => 'required',
+            'cantidad_individual' => 'required|integer',
+            'prefijo' => 'required|string',
+            'id_padre' => 'required|integer',
+            'id_hijo' => 'required|integer',
+            'fecha_id' => 'required|integer'
         ]);
 
-        $telefono = Telefono::create($request->all());
+        $ca = CantidadArea::create($request->all());
         return response()->json([
             "status" => 1,
-            "msg" => "El telefono fue creada exitosamente",
-            "data" => $telefono
+            "msg" => "La cantidad área fue creada exitosamente",
+            "data" => $ca
         ]);
     }
 
@@ -62,18 +69,20 @@ class TelefonoController extends Controller
      */
     public function show($id)
     {
-        $telefono = Telefono::all()->find($id);
-        $telefono->localidad;
-        if (isset($telefono)) {
+        $ca = CantidadArea::all()->find($id);
+        $P=$ca->areaP;
+        $H=$ca->areaH;
+        $F=$ca->fecha;
+        if (isset($ca)) {
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono encontrado exitosamente!",
-                "data" => $telefono
+                "msg" => "¡Cantidad área encontrado exitosamente!",
+                "data" => $ca
             ], 200);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, sector no encontrado!'
+                'msg' => '¡Fallo, cantidad área no encontrado!'
             ], 404);
         }
     }
@@ -98,23 +107,28 @@ class TelefonoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $telefono = Telefono::all()->find($id);
-        if (isset($telefono)) {
+        $ca = CantidadArea::all()->find($id);
+        if (isset($ca)) {
             $request->validate([
-                'numero'=>'required',
-                'localidad_id'=>'required'
+                'cantidad' => 'required|integer',
+                'stock' => 'required|integer',
+                'precio' => 'required',
+                'cantidad_individual' => 'required|integer',
+                'prefijo' => 'required|string',
+                'id_padre' => 'required|integer',
+                'id_hijo' => 'required|integer',
+                'fecha_id' => 'required|integer'
             ]);
-
-            $telefono->update($request->all());
+            $ca->update($request->all());
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono actualizado exitosamente!",
-                "data" => $telefono
-            ], 200);
+                "msg" => "Cantidad área actualizada exitosamente",
+                "data" => $ca
+            ]);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, telefono no encontrado!'
+                'msg' => '¡Fallo, cantidad área no encontrado!'
             ], 404);
         }
     }
@@ -127,18 +141,18 @@ class TelefonoController extends Controller
      */
     public function destroy($id)
     {
-        $telefono = Telefono::all()->find($id);
-        if (isset($telefono)) {
-            $telefono->delete();
+        $ca = Fecha::all()->find($id);
+        if (isset($ca)) {
+            $ca->delete();
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono eliminado exitosamente!",
-                "data" => $telefono
+                "msg" => "¡Cantidad área eliminada exitosamente!",
+                "data" => $ca
             ], 200);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, telefono no encontrado!'
+                'msg' => '¡Fallo, cantidad área no encontrado!'
             ], 404);
         }
     }

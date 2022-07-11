@@ -11,10 +11,10 @@ class CantidadArea extends Model
     protected $guarded=['id','created_at','updated_at'];
     //relación de 1 a muchos inversa
     public function areaP(){
-        return $this->belongsTo(Area::class,'id','area_padre_id');
+        return $this->belongsTo(Area::class,'id_padre');
     }
     public function areaH(){
-        return $this->belongsTo(Area::class,'id','area_hijo_id');
+        return $this->belongsTo(Area::class,'id_hijo');
     }
     public function fecha(){
         return $this->belongsTo(Fecha::class);

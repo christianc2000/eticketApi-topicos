@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Telefono;
+use App\Models\Evento;
+use App\Models\EventoLocalidad;
+use App\Models\Localidad;
 use Illuminate\Http\Request;
 
-class TelefonoController extends Controller
+class EventoLocalidadController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +17,11 @@ class TelefonoController extends Controller
      */
     public function index()
     {
-        $telefonos = Telefono::all();
+        $el = EventoLocalidad::all();
         return response()->json([
             "status" => 1,
-            "msg" => "Lista de telefonos",
-            "data" => $telefonos
+            "msg" => "Lista de Evento-Localidad",
+            "data" => $el
         ]);
     }
 
@@ -42,15 +44,15 @@ class TelefonoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'numero'=>'required',
-            'localidad_id'=>'required'
+            'evento_id'=>'required|integer',
+            'localidad_id'=>'required|integer'
         ]);
 
-        $telefono = Telefono::create($request->all());
+        $el = EventoLocalidad::create($request->all());
         return response()->json([
             "status" => 1,
-            "msg" => "El telefono fue creada exitosamente",
-            "data" => $telefono
+            "msg" => "El evento-localidad fue creado exitosamente",
+            "data" => $el
         ]);
     }
 
@@ -62,18 +64,19 @@ class TelefonoController extends Controller
      */
     public function show($id)
     {
-        $telefono = Telefono::all()->find($id);
-        $telefono->localidad;
-        if (isset($telefono)) {
+        $el = EventoLocalidad::all()->find($id);
+        $evento=$el->evento;
+        $localidad=$el->localidad;
+        if (isset($el)) {
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono encontrado exitosamente!",
-                "data" => $telefono
+                "msg" => "¡Evento-localidad encontrado exitosamente!",
+                "data" => $el
             ], 200);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, sector no encontrado!'
+                'msg' => '¡Fallo evento-localidad no encontrado!'
             ], 404);
         }
     }
@@ -98,23 +101,23 @@ class TelefonoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $telefono = Telefono::all()->find($id);
-        if (isset($telefono)) {
+        $el = EventoLocalidad::all()->find($id);
+        if (isset($el)) {
             $request->validate([
-                'numero'=>'required',
-                'localidad_id'=>'required'
+                'evento_id'=>'required|integer',
+                'localidad_id'=>'required|integer'
             ]);
 
-            $telefono->update($request->all());
+            $el->update($request->all());
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono actualizado exitosamente!",
-                "data" => $telefono
+                "msg" => "¡Evento-localidad actualizado exitosamente!",
+                "data" => $el
             ], 200);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, telefono no encontrado!'
+                'msg' => '¡Fallo, evento-localidad no encontrado!'
             ], 404);
         }
     }
@@ -127,18 +130,18 @@ class TelefonoController extends Controller
      */
     public function destroy($id)
     {
-        $telefono = Telefono::all()->find($id);
-        if (isset($telefono)) {
-            $telefono->delete();
+        $el = EventoLocalidad::all()->find($id);
+        if (isset($el)) {
+            $el->delete();
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Telefono eliminado exitosamente!",
-                "data" => $telefono
+                "msg" => "¡Evento-localidad eliminado exitosamente!",
+                "data" => $el
             ], 200);
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo, telefono no encontrado!'
+                'msg' => '¡Fallo, evento-localidad no encontrado!'
             ], 404);
         }
     }

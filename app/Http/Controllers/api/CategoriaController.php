@@ -62,17 +62,18 @@ class CategoriaController extends Controller
      */
     public function show($id)
     {
-        try {
-            $categoria = Categoria::FindOrFail($id);
+
+        $categoria = Categoria::all()->find($id);
+        if (isset($categoria)) {
             return response()->json([
                 "status" => 1,
-                "msg" => "¡Evento encontrado exitosamente!",
+                "msg" => "¡Categoría encontrado exitosamente!",
                 "data" => $categoria
             ], 200);
-        } catch (Exception $e) {
+        } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo evento no encontrado!'
+                'msg' => '¡Fallo, categoría no encontrado!'
             ], 404);
         }
     }
@@ -114,7 +115,7 @@ class CategoriaController extends Controller
         } else {
             return response()->json([
                 "status" => 0,
-                'msg' => '¡Fallo categoria no encontrado, actualización fallida!'
+                'msg' => '¡Fallo, categoria no encontrado, actualización fallida!'
             ], 404);
         }
     }
@@ -139,7 +140,7 @@ class CategoriaController extends Controller
         } else {
             return response()->json([
                 "status" => 0,
-                "msg" => "¡Fallo categoria no encontrada!"
+                "msg" => "¡Fallo, categoria no encontrada!"
             ], 404);
         }
     }

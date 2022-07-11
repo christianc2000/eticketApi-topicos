@@ -19,7 +19,7 @@ class CreateAreaSectorsTable extends Migration
             $table->string('color');
             $table->foreignId('sector_id')->references('id')->on('sectors');
             $table->foreignId('area_id')->references('id')->on('areas');
-            $table->foreignId('evento_localidad_id')->references('id')->on('evento_localidads');
+            $table->foreignId('evento_localidad_id')->references('id')->on('evento_localidads')->onDelete('cascade');
             $table->timestamps();
         });
     }

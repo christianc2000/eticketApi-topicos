@@ -66,6 +66,7 @@ class LocalidadController extends Controller
     {
         
         $localidad = Localidad::all()->find($id);
+        
         if (isset($localidad)) {
             return response()->json([
                 "status" => 1,
