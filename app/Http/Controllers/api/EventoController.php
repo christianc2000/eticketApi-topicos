@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Categoria;
 use App\Models\Evento;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class EventoController extends Controller
@@ -18,11 +19,16 @@ class EventoController extends Controller
     public function index()
     {
         $eventos = Evento::all();
-        $categoria=Categoria::all();
+        $ev = new Collection();
+    foreach ($eventos as $evento ) {
+        $evento=Evento::all()->find($evento->id);
+        $evento->categoria;
+        $ev->push($evento);
+    }
         return response()->json([
             "status" => 1,
             "msg" => "Lista de Eventos",
-            "data" => $eventos
+            "data" => $ev
         ]);
     }
 
@@ -70,6 +76,7 @@ class EventoController extends Controller
 
         $evento = Evento::all()->find($id);
         $evento->categoria;
+        
         if (isset($evento)) {
             return response()->json([
                 "status" => 1,
