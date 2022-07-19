@@ -44,8 +44,8 @@ class EventoLocalidadController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'evento_id'=>'required|integer',
-            'localidad_id'=>'required|integer'
+            'evento_id' => 'required|integer',
+            'localidad_id' => 'required|integer'
         ]);
 
         $el = EventoLocalidad::create($request->all());
@@ -65,8 +65,8 @@ class EventoLocalidadController extends Controller
     public function show($id)
     {
         $el = EventoLocalidad::all()->find($id);
-        $evento=$el->evento;
-        $localidad=$el->localidad;
+        $evento = $el->evento;
+        $localidad = $el->localidad;
         if (isset($el)) {
             return response()->json([
                 "status" => 1,
@@ -104,8 +104,8 @@ class EventoLocalidadController extends Controller
         $el = EventoLocalidad::all()->find($id);
         if (isset($el)) {
             $request->validate([
-                'evento_id'=>'required|integer',
-                'localidad_id'=>'required|integer'
+                'evento_id' => 'required|integer',
+                'localidad_id' => 'required|integer'
             ]);
 
             $el->update($request->all());

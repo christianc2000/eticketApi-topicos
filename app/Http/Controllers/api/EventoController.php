@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Categoria;
 use App\Models\Evento;
 use App\Models\Image;
+use App\Models\Images;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -22,11 +23,11 @@ class EventoController extends Controller
     {
         $eventos = Evento::all();
         $ev = new Collection();
-    foreach ($eventos as $evento ) {
-        $evento=Evento::all()->find($evento->id);
-        $evento->categoria;
-        $ev->push($evento);
-    }
+        foreach ($eventos as $evento) {
+            $evento = Evento::all()->find($evento->id);
+            $evento->categoria;
+            $ev->push($evento);
+        }
         return response()->json([
             "status" => 1,
             "msg" => "Lista de Eventos",
@@ -66,10 +67,10 @@ class EventoController extends Controller
             $folder = "public/perfil";
             $imagen = $request->file('foto')->store($folder); //Storage::disk('local')->put($folder, $request->image, 'public');
             $url = Storage::url($imagen);
-            $imagen=Image::create([
-                 'image'=>$url,
-                 'imageable_id'=>$evento->id,
-                 'imageable_type'=> Evento::class
+            $imagen = Images::create([
+                'url' => $url,
+                'imageable_id' => $evento->id,
+                'imageable_type' => Evento::class
             ]);
         }
 
@@ -77,7 +78,7 @@ class EventoController extends Controller
             "status" => 1,
             "msg" => "El evento fue creado exitosamente",
             "data" => $evento,
-            "image" => $imagen->url
+            "image" => $imagen
         ]);
     }
 
@@ -92,13 +93,13 @@ class EventoController extends Controller
 
         $evento = Evento::all()->find($id);
         $evento->categoria;
-        $image=$evento->image;
+        $image = $evento->image;
         if (isset($evento)) {
             return response()->json([
                 "status" => 1,
                 "msg" => "¡Evento encontrado exitosamente!",
                 "data" => $evento,
-                "image"=> $image
+                "image" => $image
             ], 200);
         } else {
             return response()->json([
@@ -134,14 +135,32 @@ class EventoController extends Controller
                 'title' => 'required|string',
                 'description' => 'required',
                 'publicado' => 'boolean',
-                'categoria_id' => 'required'
+                'categoria_id' => 'required',
+                'foto' =>  'required|mimes:jpg,jpeg,bmp,png|max:2048',
             ]);
 
             $evento->update($request->all());
+            if ($request->hasFile('foto')) {
+                $folder = "public/image";
+                if ($evento->image != null) { //si entra es para actualizar su foto borrando la que tenía, si no tenía entonces no entra
+
+                    Storage::delete($evento->image);
+                }
+                $imagen = $request->file('foto')->store($folder); //Storage::disk('local')->put($folder, $request->image, 'public');
+                $url = Storage::url($imagen);
+                Images::create(
+                    [
+                        'url'=>$url,
+                        'imageable_type'=>Evento::class,
+                        'imageable_id'=>$evento->id
+                    ]
+                );
+            }
             return response()->json([
                 "status" => 1,
                 "msg" => "¡Evento actualizado exitosamente!",
-                "data" => $evento
+                "data" => $evento,
+                "image"=> $evento->image
             ], 200);
         } else {
             return response()->json([

@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Image;
+use App\Models\Evento;
+use App\Models\Images;
 use Illuminate\Database\Seeder;
 
 class ImageSeeder extends Seeder
@@ -14,13 +15,13 @@ class ImageSeeder extends Seeder
      */
     public function run()
     {
-        Image::create([
-            'image'=>'image/Daddy-Yankee1.jpg',
+        Images::create([
+            'url'=>'image/Daddy-Yankee1.jpg',
             'imageable_type'=>Evento::class,
             'imageable_id'=>1
         ]);
-        Image::create([
-            'image'=>'image/thor-love-and-thunder1.jpg',
+        Images::create([
+            'url'=>'image/thor-love-and-thunder1.jpg',
             'imageable_type'=>Evento::class,
             'imageable_id'=>2
         ]);
