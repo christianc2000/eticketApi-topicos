@@ -92,12 +92,13 @@ class EventoController extends Controller
 
         $evento = Evento::all()->find($id);
         $evento->categoria;
-        
+        $image=$evento->image;
         if (isset($evento)) {
             return response()->json([
                 "status" => 1,
                 "msg" => "¡Evento encontrado exitosamente!",
-                "data" => $evento
+                "data" => $evento,
+                "image"=> $image
             ], 200);
         } else {
             return response()->json([
