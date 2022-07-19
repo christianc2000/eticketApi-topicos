@@ -15,12 +15,12 @@ class ImageSeeder extends Seeder
     public function run()
     {
         Image::create([
-            'url'=>'image/Daddy-Yankee1.jpg',
+            'image'=>'image/Daddy-Yankee1.jpg',
             'imageable_type'=>Evento::class,
             'imageable_id'=>1
         ]);
         Image::create([
-            'url'=>'image/thor-love-and-thunder1.jpg',
+            'image'=>'image/thor-love-and-thunder1.jpg',
             'imageable_type'=>Evento::class,
             'imageable_id'=>2
         ]);

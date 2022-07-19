@@ -67,7 +67,7 @@ class EventoController extends Controller
             $imagen = $request->file('foto')->store($folder); //Storage::disk('local')->put($folder, $request->image, 'public');
             $url = Storage::url($imagen);
             $imagen=Image::create([
-                 'url'=>$url,
+                 'image'=>$url,
                  'imageable_id'=>$evento->id,
                  'imageable_type'=> Evento::class
             ]);
