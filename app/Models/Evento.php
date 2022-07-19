@@ -17,4 +17,9 @@ class Evento extends Model
     public function eventoLocalidads(){
         return $this->hasMany(EventoLocalidad::class);
     }
+    //relación de 1 a muchos polimorfica
+    public function image()
+    {
+        return $this->morphMany(Images::class, 'imageable');
+    }
 }

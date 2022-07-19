@@ -5,9 +5,11 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Categoria;
 use App\Models\Evento;
+use App\Models\Image;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EventoController extends Controller
 {
@@ -54,14 +56,28 @@ class EventoController extends Controller
             'title' => 'required|string',
             'description' => 'required',
             'publicado' => 'boolean',
-            'categoria_id' => 'required'
+            'categoria_id' => 'required',
+            'foto' =>  'required|mimes:jpg,jpeg,bmp,png|max:2048',
         ]);
 
         $evento = Evento::create($request->all());
+        if ($request->hasFile('foto')) {
+
+            $folder = "public/perfil";
+            $imagen = $request->file('foto')->store($folder); //Storage::disk('local')->put($folder, $request->image, 'public');
+            $url = Storage::url($imagen);
+            $imagen=Image::create([
+                 'url'=>$url,
+                 'imageable_id'=>$evento->id,
+                 'imageable_type'=> Evento::class
+            ]);
+        }
+
         return response()->json([
             "status" => 1,
             "msg" => "El evento fue creado exitosamente",
-            "data" => $evento
+            "data" => $evento,
+            "image" => $imagen->url
         ]);
     }
 
